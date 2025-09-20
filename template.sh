@@ -5,6 +5,7 @@ mkdir -p src
 touch src/__init__.py
 touch src/helper.py
 touch src/prompt.py
+touch .gitignore
 touch .env
 touch setup.py
 touch app.py
