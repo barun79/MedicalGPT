@@ -1,62 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- =========================
-       MedicalGPT — Single‑File HTML (No JS)
-       Responsive, modern UI with soft medical theme
-       Author: ChatGPT
-     ========================= -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MedicalGPT — Your Smart Health Companion</title>
 
-  <!-- Google Font: Inter -->
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* =========================
-       CSS Variables (Theme)
-     ========================= */
     :root {
-      --bg: #f7fbff;                  /* overall page background */
-      --bg-accent: #eef7ff;           /* card background */
-      --primary: #0ea5a3;             /* teal accents */
-      --primary-700: #0b8685;         /* darker teal */
-      --muted: #7c8a9a;               /* secondary text */
-      --ink: #0f172a;                  /* main text */
+      --bg: #f7fbff;
+      --bg-accent: #eef7ff;
+      --primary: #0ea5a3;
+      --primary-700: #0b8685;
+      --muted: #7c8a9a;
+      --ink: #0f172a;
       --white: #ffffff;
-      --bubble-user: #e6f6ff;         /* user bubble */
-      --bubble-bot: #e9fbf6;          /* bot bubble */
+      --bubble-user: #e6f6ff;
+      --bubble-bot: #e9fbf6;
       --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-      --radius-xl: 18px;
       --radius-2xl: 22px;
     }
 
-    /* =========================
-       Page Background & Layout
-     ========================= */
     html, body {
       height: 100%;
-      background: radial-gradient(1200px 800px at 10% -10%, #eaf6ff 0%, transparent 60%),
-                  radial-gradient(1200px 800px at 110% 10%, #e8fffb 0%, transparent 60%),
-                  var(--bg);
-      color: var(--ink);
-      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      line-height: 1.5;
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
       margin: 0;
     }
 
-    /* Centering wrapper */
     .shell {
       min-height: 100%;
       display: grid;
       place-items: center;
-      padding: clamp(16px, 3.5vw, 40px);
+      padding: 24px;
     }
 
-    /* =========================
-       App Card
-     ========================= */
     .app {
       width: min(980px, 100%);
       background: linear-gradient(180deg, var(--white), var(--bg-accent));
@@ -65,108 +45,68 @@
       display: grid;
       grid-template-rows: auto 1fr auto;
       overflow: hidden;
-      border: 1px solid rgba(14, 165, 163, 0.08);
     }
 
-    /* =========================
-       Header / Branding
-     ========================= */
     .header {
-      padding: clamp(16px, 2.5vw, 22px) clamp(18px, 3vw, 28px);
+      padding: 20px 28px;
       background: linear-gradient(180deg, rgba(14,165,163,0.07), transparent);
       display: flex;
       align-items: center;
       gap: 14px;
       border-bottom: 1px solid rgba(14,165,163,0.12);
     }
+
     .logo {
-      display: grid;
-      place-items: center;
       width: 44px;
       height: 44px;
-      border-radius: 12px;
-      background: conic-gradient(from 180deg at 50% 50%, #10b6b4, #79e3e1 40%, #10b6b4 80%);
-      color: var(--white);
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.45), 0 6px 14px rgba(16, 182, 180, 0.25);
-      user-select: none;
-    }
-    .brand {
       display: grid;
-    }
-    .brand .title {
-      font-size: clamp(18px, 2.4vw, 22px);
-      font-weight: 700;
-    }
-    .brand .tagline {
-      font-size: clamp(12px, 1.6vw, 14px);
-      color: var(--muted);
-      margin-top: 2px;
+      place-items: center;
+      background: conic-gradient(from 180deg at 50% 50%, #10b6b4, #79e3e1 40%, #10b6b4 80%);
+      border-radius: 12px;
+      color: white;
+      font-weight: 800;
+      box-shadow: 0 6px 14px rgba(16,182,180,0.25);
     }
 
-    /* =========================
-       Chat Area (Scrollable)
-     ========================= */
     .chat {
-      padding: clamp(14px, 2.5vw, 22px);
+      padding: 20px;
       overflow: auto;
       display: grid;
       gap: 12px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4)),
-        repeating-linear-gradient(135deg, rgba(14,165,163,0.05) 0 24px, rgba(14,165,163,0.07) 24px 48px, transparent 48px 72px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4));
     }
 
-    /* Message Row */
     .row {
       display: flex;
       align-items: flex-end;
       gap: 10px;
-      animation: slideIn 500ms ease both;
     }
 
-    /* Avatar */
+    .row.bot { justify-content: flex-start; }
+    .row.user { justify-content: flex-end; }
+
     .avatar {
-      flex: 0 0 38px;
       width: 38px;
       height: 38px;
       border-radius: 50%;
       display: grid;
       place-items: center;
-      background: var(--white);
+      background: white;
       box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-      border: 1px solid rgba(14,165,163,0.15);
-      font-size: 18px;
-      user-select: none;
     }
 
-    /* Bubble */
     .bubble {
-      max-width: min(720px, 78%);
+      max-width: 75%;
       padding: 12px 14px;
       border-radius: 16px;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
-      position: relative;
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
-    .bubble:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+      box-shadow: 0 6px 18px rgba(15,23,42,0.07);
+      white-space: pre-wrap;         /* ✅ Preserve line breaks */
+      line-height: 1.5;              /* ✅ Improve readability */
+      font-size: 15px;
     }
 
-    /* Bot vs User styles */
-    .row.bot { justify-content: flex-start; }
-    .row.user { justify-content: flex-end; }
-
-    .row.bot .bubble {
-      background: var(--bubble-bot);
-      border-top-left-radius: 6px;
-    }
-    .row.user .bubble {
-      background: var(--bubble-user);
-      border-top-right-radius: 6px;
-    }
+    .row.bot .bubble { background: var(--bubble-bot); }
+    .row.user .bubble { background: var(--bubble-user); }
 
     .name {
       font-size: 12px;
@@ -176,175 +116,143 @@
       display: block;
     }
 
-    /* Small accent pill timestamp (optional demo) */
-    .meta {
-      margin-top: 8px;
-      font-size: 11px;
-      color: var(--muted);
+    /* ✅ Style bullets nicely */
+    .bubble ul, .bubble ol {
+      margin: 6px 0 6px 20px;
+      padding: 0;
     }
+    .bubble li { margin-bottom: 4px; }
 
-    /* =========================
-       Composer (Input + Button)
-     ========================= */
     .composer {
       padding: 14px;
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 10px;
-      background: linear-gradient(180deg, transparent, rgba(14,165,163,0.06));
       border-top: 1px solid rgba(14,165,163,0.12);
+      background: var(--white);
     }
 
     .field {
       display: grid;
       align-items: center;
-      grid-template-columns: 1fr auto;
-      background: var(--white);
-      border: 1px solid rgba(14,165,163,0.20);
+      background: white;
+      border: 1px solid rgba(14,165,163,0.2);
       border-radius: 999px;
       padding: 10px 12px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
     }
 
-    .field input[type="text"] {
+    .field input {
       border: 0;
       outline: none;
       font: inherit;
       padding: 6px 8px;
-      color: var(--ink);
       min-width: 0;
     }
 
     .btn {
-      appearance: none;
-      -webkit-appearance: none;
       border: 0;
       background: var(--primary);
-      color: var(--white);
+      color: white;
       font-weight: 600;
       padding: 10px 18px;
       border-radius: 999px;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(14,165,163,0.35);
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-    }
-    .btn:hover {
-      transform: translateY(-1px);
-      background: var(--primary-700);
-      box-shadow: 0 10px 24px rgba(14,165,163,0.45);
-    }
-    .btn:active {
-      transform: translateY(0);
-      box-shadow: 0 6px 18px rgba(14,165,163,0.35);
+      transition: background 0.2s ease;
     }
 
-    /* =========================
-       Animations
-     ========================= */
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* subtle shimmer animation for header logo */
-    @keyframes shimmer {
-      0% { filter: brightness(1); }
-      50% { filter: brightness(1.08); }
-      100% { filter: brightness(1); }
-    }
-    .logo { animation: shimmer 3.2s ease-in-out infinite; }
-
-    /* =========================
-       Responsive Tweaks
-     ========================= */
-    @media (max-width: 640px) {
-      .avatar { display: none; }
-      .bubble { max-width: 100%; }
-      .btn { padding: 10px 14px; }
-    }
+    .btn:hover { background: var(--primary-700); }
   </style>
 </head>
 
 <body>
   <main class="shell">
-    <!-- ===== App Card ===== -->
     <section class="app" role="application" aria-label="MedicalGPT chat">
-      <!-- ===== Header / Branding ===== -->
       <header class="header">
-        <div class="logo" aria-hidden="true">🩺</div>
+        <div class="logo">🩺</div>
         <div class="brand">
           <div class="title">MedicalGPT</div>
           <div class="tagline">Your Smart Health Companion</div>
         </div>
       </header>
 
-      <!-- ===== Chat Area (Demo content) ===== -->
-      <div class="chat" id="chat" aria-live="polite">
-        <!-- Bot message -->
+      <div class="chat" id="chat">
+        <!-- Initial greeting -->
         <div class="row bot">
-          <div class="avatar" title="MedicalGPT avatar">🧑‍⚕️</div>
+          <div class="avatar">🧑‍⚕️</div>
           <div class="bubble">
-            <span class="name">MedicalGPT</span>
-            Hello! How can I help today?
-            <div class="meta">Now • Typing simulation</div>
-          </div>
-        </div>
-
-        <!-- User message -->
-        <div class="row user">
-          <div class="bubble">
-            <span class="name">You</span>
-            What are common symptoms of a cold?
-            <div class="meta">Just now</div>
-          </div>
-          <div class="avatar" title="User avatar">👤</div>
-        </div>
-
-        <!-- Bot message -->
-        <div class="row bot">
-          <div class="avatar" aria-hidden="true">🧑‍⚕️</div>
-          <div class="bubble">
-            <span class="name">MedicalGPT</span>
-            Common symptoms include a runny or stuffy nose, sore throat, cough, mild fever, sneezing, watery eyes, and fatigue. If symptoms last more than 10 days, worsen, or you have a high fever or shortness of breath, consider consulting a clinician.
-            <div class="meta">Just now</div>
-          </div>
-        </div>
-
-        <!-- User message -->
-        <div class="row user">
-          <div class="bubble">
-            <span class="name">You</span>
-            Thanks! Also, can I prevent colds?
-            <div class="meta">Just now</div>
-          </div>
-          <div class="avatar" aria-hidden="true">👤</div>
-        </div>
-
-        <!-- Bot message -->
-        <div class="row bot">
-          <div class="avatar" aria-hidden="true">🧑‍⚕️</div>
-          <div class="bubble">
-            <span class="name">MedicalGPT</span>
-            Hand hygiene, enough sleep, staying hydrated, and avoiding close contact with sick individuals can reduce risk. A healthy diet and regular activity support your immune system.
-            <div class="meta">Just now</div>
+            <span class="name">MedicalGPT</span>Hello! How can I help today?
           </div>
         </div>
       </div>
 
-      <!-- ===== Composer (non-functional UI) ===== -->
-      <form class="composer" aria-label="Message composer" onsubmit="return false">
+      <form class="composer" onsubmit="return false">
         <div class="field">
-          <input type="text" placeholder="Type your message here…" aria-label="Message input" />
+          <input type="text" id="userInput" placeholder="Type your message here…" />
         </div>
-        <button class="btn" type="button" aria-label="Send message">Send</button>
+        <button class="btn" id="sendBtn" type="button">Send</button>
       </form>
     </section>
   </main>
+
+  <!-- ===== JavaScript to connect to Flask backend ===== -->
+  <script>
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+
+      // User bubble
+      const userRow = document.createElement("div");
+      userRow.className = "row user";
+      userRow.innerHTML = `<div class="bubble"><span class="name">You</span>${text}</div><div class="avatar">👤</div>`;
+      chat.appendChild(userRow);
+      chat.scrollTop = chat.scrollHeight;
+
+      // Typing indicator
+      const typingRow = document.createElement("div");
+      typingRow.className = "row bot";
+      typingRow.innerHTML = `<div class="avatar">🧑‍⚕️</div><div class="bubble"><span class="name">MedicalGPT</span>Typing...</div>`;
+      chat.appendChild(typingRow);
+      chat.scrollTop = chat.scrollHeight;
+
+      try {
+        const res = await fetch("http://127.0.0.1:8080/get", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ input: text })
+        });
+        const data = await res.json();
+        typingRow.remove();
+
+        const botRow = document.createElement("div");
+        botRow.className = "row bot";
+
+        // ✅ Ensure formatted text displays with line breaks
+        const formattedAnswer = data.answer
+          .replace(/\n/g, "<br>")
+          .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>"); // bold support
+
+        botRow.innerHTML = `<div class="avatar">🧑‍⚕️</div><div class="bubble"><span class="name">MedicalGPT</span>${formattedAnswer}</div>`;
+        chat.appendChild(botRow);
+        chat.scrollTop = chat.scrollHeight;
+      } catch (err) {
+        typingRow.remove();
+        const errorRow = document.createElement("div");
+        errorRow.className = "row bot";
+        errorRow.innerHTML = `<div class="avatar">🧑‍⚕️</div><div class="bubble"><span class="name">MedicalGPT</span>⚠️ Couldn't connect to backend. Is Flask running?</div>`;
+        chat.appendChild(errorRow);
+        console.error(err);
+      }
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
 </body>
 </html>
