@@ -11,7 +11,7 @@ from src.prompt import *
 import os
 
 app = Flask(__name__)
-CORS(app)  # allow requests from your local HTML file
+CORS(app)  
 
 load_dotenv()
 
@@ -25,7 +25,7 @@ embeddings = download_embeddings()
 
 index_name = "medical-gpt"
 
-# Load Pinecone index
+
 docsearch = PineconeVectorStore.from_existing_index(
     index_name=index_name,
     embedding=embeddings
@@ -33,10 +33,10 @@ docsearch = PineconeVectorStore.from_existing_index(
 
 retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 
-# ✅ Updated to a supported Groq model
+
 chatModel = ChatGroq(model_name="llama-3.1-8b-instant")
 
-# ✅ Make sure prompt includes {context}
+
 prompt = ChatPromptTemplate.from_messages([
     ("system", system_prompt + "\n\nContext:\n{context}"),
     ("user", "{input}")
@@ -49,7 +49,7 @@ rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 def index():
     return render_template("chat.html")
 
-# ✅ Fix this route to handle JSON requests from frontend
+
 @app.route("/get", methods=["POST"])
 def chat():
     data = request.get_json()
